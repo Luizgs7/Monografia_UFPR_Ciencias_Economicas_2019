@@ -1,0 +1,43 @@
+
+/* alterar dimensões do logo */
+.gdbar img {
+  width: 300px !important;
+  height: 150px !important;
+  margin: 8px 8px;
+}
+
+.gdbar {
+  width: 400px !important;
+  height: 170px !important;
+}
+
+
+div.container4 {
+    height: 10em;
+    position: relative }
+div.container4 p {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%) }
+
+
+
+IMG.displayed {
+    display: block;
+    margin-left: auto;
+    margin-right: auto }
+
+#fixed { 
+    attachment: fixed;
+    position: 70% 60%; 
+}
+
+
+#fixed1 { 
+    background-position: right 60% bottom 20%;
+}
+
+.fixed2 { position: absolute;  right:80px; botton: 80px; }

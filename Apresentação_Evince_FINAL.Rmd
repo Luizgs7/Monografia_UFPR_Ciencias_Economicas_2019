@@ -1,0 +1,271 @@
+---
+title: "Análise de Networks e Matrizes Insumo-Produto"
+author: "Luiz Gabriel de Souza  |  Ciências Econômicas 28.11.2019 - UFPR"
+output:
+  ioslides_presentation:
+    css: ppt_final.css
+    incremental: yes
+#    logo: C:\Users\NeX\Google Drive\Nex IC 2017 - Luiz Gabriel\PPT\Logo_NeX.png
+    logo: .\logo_ufpr.jpg
+    template: quarterly-report.html 
+    transition: slower
+---
+```{r error=FALSE, message="", warning=FALSE, include=FALSE}
+library(pander)
+library(networkD3)
+library(igraph)
+library(readxl)
+library(dplyr)
+library(sna)
+library(xtable)
+library(reshape)
+library(ggplot2)
+library(data.table)
+library(network)
+library(RColorBrewer)
+library(gridExtra)  
+library(plotly)
+library(sqldf)
+library(png)
+library(knitr)
+library(sqldf)
+```
+
+## Sumário {.build}
+
+* Insumo-Produto e *Network Analysis*
+
+* Modelos Norte-Sul
+
+* Teoria dos *Graphos*
+
+* Resultados
+
+
+***
+## Matrizes Insumo-Produto
+
+```{r echo = FALSE, fig.align='center', error=FALSE, message="", warning=FALSE}
+library(igraph)
+M  <-  matrix( c(    0,	 96,	 48,	15,	     0,	    0,
+                   588,	  0,	  0,	 0,	   525,	   25,
+                   291,	  0,	  0,	59,	     0,	    0,
+                     0,   0,	 20,     0,	     0,	    0,
+                     0,	154,	  0,     0,	     0,	    0,
+                     0,	  9,	  0,	 0,	     0,	    0),nrow=6,ncol=6,byrow = TRUE)
+
+dimnames(M)  <-  list( c("Agric", "Alime", "IndTr", "Eletr", "Petro", "Transp" ), c("Agric", "Alime", "IndTr", "Eletr", "Petro", "Transp" ))
+
+pander(M) 
+```
+
+## O que são Networks Analysis?  
+
+ * É um método matemático e gráfico que permite estudar sistemas constituídos de pontos (agentes) conectados (links) que geram macro e micro estruturas próprias. Tais estruturas evoluem criando e destruindos conexões, produzindo dinâmicas complexas que de outra forma não poderiam ser estudadas (Jackson, 2008);  
+ 
+ * Networks são observadas em importantes dimensões da economia e da sociedade. Relações entre países, cidades, firmas, consumidores, sistema financeiro e muitos outros, formam redes de alta complexidade por onde fluem informações, mercadorias e valores monetários.
+
+
+## Transformando Matrizes Insumo-Produto em Networks Interativas
+```{r echo = FALSE, fig.align='center', error=FALSE, message="", warning=FALSE}
+# Load package
+library(networkD3)
+
+# Create fake data
+src    <- c("Agric", "Agric", "Agric", "Alime", "Alime", "IndTr", "IndTr", "Eletr", "Petro")
+target <- c("Alime", "IndTr", "Eletr", "Petro", "Transp", "Agric", "IndTr", "IndTr", "Alime")
+networkData <- data.frame(src, target)
+
+# Plot
+simpleNetwork(networkData, fontSize = 12, opacity = 0.8,  charge = -70, linkDistance = 60, zoom = T )
+```
+
+
+## Modelos Norte-Sul
+
+#### **1. Estruturalismo da CEPAL** (Singer,1950; Prebisch, 1950)
+  - Relação Centro-Periferia;
+  
+#### **2. Modelos Norte-Sul** (Krugman, 1979 e Findlay 1980)  
+  - Inovação e Indústria;
+  
+#### **3. A escolha dos países:**
+  - Norte: EUA, Reino Unido, Alemanha, Noruega e Coreia; 
+  - Sul: Brasil, Rússia, Índia, China e México.  
+
+## A pesquisa
+
+#### **1. Matriz Insumo-Produto com 56 setores;**  
+ - *World Input-Output Database* (Timmer et al., 2015)
+ 
+#### **2. Algoritmo desenvolvido em *R*:**  
+
+ -  *igraph* ;  *NetworkD3* ;  *dplyr*
+  
+#### **3. Aplicação de estatísticas descritivas da teoria dos graphos:**  
+
+ -  *Degree*
+ -  *Betweenness*
+ -  *Diameter*
+ -  *Density*
+  
+#### **4. Thresholds:**  
+ - Filtros limitadores de 5%, 10% e 15%.
+
+***
+### Necessidade de filtros: Excesso de conexões inexpressivas.
+
+<img style="position: absolute;  top: 22%; right: 17%; " width="600px" height="500px"
+src="net_gif_000.gif"  />
+
+
+##
+
+### **Degree:**  <br />
+
+- Número de links de um setor: $x_{i} = \sum_i a_{j,i}$ <br />
+
+ <img style="position: absolute;  top: 30%; right: 18%; " width="500px" height="400px"
+src="gNet-degree2014_.png"  />
+
+## 
+### **Betweenness:**  <br />
+
+- Mede a extensão em que um vértice se encontra em trajetos entre outros vértices: $BC(i) = \sum {w,j} (\frac{\sigma{wj(i)}}{\sigma{wj}})$.
+
+ <img style="position: absolute;  top: 33%; right: 18%; " width="500px" height="400px"
+src="gNet-betweenness2014_.png"  />
+
+## 
+### **Diameter:**  <br />
+
+- Mede o comprimento de um grapho contando o número de arestas no caminho mais curto entre os vértices mais distantes: $Diameter = max_{i,j}{d(i,j)}$, onde $i,j$ são setores da network.
+
+
+ <img style="position: absolute;  top: 40%; right: 25%; " width="500px" height="400px"
+src="gNet-diameter.png"  />
+
+
+## 
+### **Density:**  <br />
+
+- Descreve a proporção de conexões em potencial em uma rede que são conexões reais. $Density = \frac{Conexões Existentes}{Conexões Potenciais}$
+
+ <img style="position: absolute;  top: 40%; right: 25%; " width="500px" height="400px"
+src="gNet-density.png"  />
+
+
+## Conclusões - Países do Sul
+
+<img style="position: absolute;  top: 18%; right: 17%; " width="600px" height="500px"
+src="Tabela_01_Sul.PNG"  />
+
+## Conclusões - Países do Norte
+
+<img style="position: absolute;  top: 18%; right: 17%; " width="600px" height="500px"
+src="Tabela_02_Norte.PNG"  />
+
+
+## Networks - Países do Sul
+
+<div style="position: absolute;  top: 11%; right: 8%; ">
+    Índia
+</div>
+<img style="position: absolute;  top: 16%; right: 3%; " width="280px" height="280px"
+src="graphos/India.gif"  />
+
+<div style="position: absolute;  top: 11%; right: 41%; ">
+    Rússia
+</div>
+<img style="position: absolute;  top: 16%; right: 35%; " width="280px" height="280px"
+src="graphos/Russia.gif"  />
+
+<div style="position: absolute;  top: 11%; right: 72%; ">
+    Brasil
+</div>
+<img style="position: absolute;  top: 16%; right: 67%; " width="280px" height="280px" 
+src="graphos/Brasil.gif"  />
+
+<div style="position: absolute;  top: 53%; right: 63%; ">
+    China
+</div>
+<img style="position: absolute;  top: 58%; right: 56%; " width="280px" height="280px" 
+src="graphos/China.gif"  />
+
+<div style="position: absolute;  top: 53%; right: 25%; ">
+    México
+</div>
+<img style="position: absolute;  top: 58%; right: 20%; " width="280px" height="280px" 
+src="graphos/Mexico.gif"  />
+
+
+## Networks - Países do Norte
+
+<div style="position: absolute;  top: 11%; right: 8%; ">
+    Alemanha
+</div>
+<img style="position: absolute;  top: 16%; right: 3%; " width="280px" height="280px"
+src="graphos/Alemanha.gif"  />
+
+<div style="position: absolute;  top: 11%; right: 41%; ">
+    EUA
+</div>
+<img style="position: absolute;  top: 16%; right: 35%; " width="280px" height="280px"
+src="graphos/EUA.gif"  />
+
+<div style="position: absolute;  top: 11%; right: 72%; ">
+    Reino Unido
+</div>
+<img style="position: absolute;  top: 16%; right: 67%; " width="280px" height="280px" 
+src="graphos/Reino Unido.gif"  />
+
+<div style="position: absolute;  top: 53%; right: 63%; ">
+    Coreia
+</div>
+<img style="position: absolute;  top: 58%; right: 56%; " width="280px" height="280px" 
+src="graphos/Corea.gif"  />
+
+<div style="position: absolute;  top: 53%; right: 25%; ">
+    Noruega
+</div>
+<img style="position: absolute;  top: 58%; right: 20%; " width="280px" height="280px" 
+src="graphos/Noruega.gif"  />
+
+
+## Conclusões
+
+ * China(Sul) e Coreia(Norte) são as economias mais diversificadas analisadas;
+ * Países do Sul parecem estar em uma tendência a diversificação econômica;
+ * Em contra partida, os países do Norte em geral, parecem estar diminuindo a diversificação econômica; 
+ * Na maioria dos países, os setores dominantes permaneceram como centrais durante toda a série;  
+ * Validação do método de análise de *Networks* como ferramenta de análise econômica;  
+ * Aplicação da metodologia para análise da *Network* mundial, com todos os países.
+ 
+
+##
+Referências:
+
+* Timmer, M. P. et al. An Illustrated User Guide to the World Input-Output Database: The Case of Global Automotive Production. Review of International Economics, v. 23,n. 3, p. 575{605, 2015. ISSN 14679396.
+
+* Singer, H. W. The Distribution of Gains between Investing and Borrowing Countries.
+The American Economic Review, v. 40, n. 2, p. 473{485, 1950. Disponível em:
+hhttps://www.jstor.org/stable/1818065i.
+
+* Prebisch, R. The Economic Development of Latin America and Its Principal Problems.
+Unites Nations Publication, v. 50, 1950.
+
+* Jackson, M. O. Social and Economic Networks. [S.l.]: Princeton University Press, 2008.
+648 p.
+
+* Krugman, P. A Model of Innovation , Technology Transfer , and the World Distribution
+of Income. Journal of Political Economy, v. 87, n. 2, p. 253-266, 1979. Disponível em:
+hhttps://www.jstor.org/stable/1832086i.
+
+* Findlay, R. The Terms of Trade and Equilibrium Growth in the World Economy.
+American Economic Association, v. 70, n. 3, p. 291-299, 1980. Disponível em:
+hhttps://www.jstor.org/stable/1805220i.
+
+***
+<div style="position: absolute;  top: 50%; right: 41%; ">
+   Obrigado a todos!
+</div>
