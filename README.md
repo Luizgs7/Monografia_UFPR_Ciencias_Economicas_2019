@@ -4,6 +4,8 @@
 
 Apresentção do projeto **"Network analysis with Input-Output Matrix"** para banca avaliadora como requisito para conclusão da graduação em Ciências Econômicas pela Universidade Federal do Paraná. O projeto consistiu na análise de matrize insumo-produtos de países selecionados com o método de redes (Networks).
 
+[Artigo](https://drive.google.com/file/d/1m4TGHl4OF2z8-3yHfpAjOBk5JGMlRGlf/view?usp=sharing)
+
 Resumo:
 
 A estrutura produtiva de um país ou de uma cadeia de valor é um dos vetores do desenvolvimento econômico. A diversificação produtiva e a interconexão entre os diversos elos de toda a cadeia produtiva forma uma rede complexa de interaçõoes e, de acordo com modernas teorias do desenvolvimento, quanto mais diversificada, densa e interconectada é uma economia, maior é seu grau de desenvolvimento econômico. Partindo desse pressuposto, o presente trabalho tem como objetivo principal analisar a interconectividade setorial da economia por meio do método de análise de redes, de dez países selecionados, sendo cinco em desenvolvimento do Sul - Brasil, Rússia, Índia, China e Méexico - e os outros cinco países desenvolvidos do Norte- EUA, Alemanha, Reino Unido, Noruega e Coreia do Sul - seguindo a lógica dos modelos Norte-Sul.
